@@ -28,6 +28,18 @@ async function request(method, path, body) {
     throw new ApiError('No se pudo conectar con el servidor. Revisa tu conexión.', 0);
   }
 
+  // Nuestra API siempre responde JSON. Si llega otra cosa (HTML, 404 de otro servidor...),
+  // /api no está llegando al backend: proxy sin configurar o backend apagado.
+  const isJson = response.headers.get('content-type')?.includes('application/json');
+  if (!isJson) {
+    console.error(
+      `[api] ${method} ${apiUrl(path)} respondió ${response.status} sin JSON. ` +
+        'Verifica que el backend esté corriendo y que /api apunte a él ' +
+        '(proxy de Vite en desarrollo o rewrites de vercel.json en producción).',
+    );
+    throw new ApiError('No se pudo conectar con el servidor. Intenta de nuevo en unos minutos.', response.status);
+  }
+
   const data = await response.json().catch(() => null);
   if (!response.ok) {
     if (response.status === 401) window.dispatchEvent(new Event('auth:unauthorized'));
