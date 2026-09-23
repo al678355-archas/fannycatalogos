@@ -14,6 +14,7 @@ import AdminImages from './pages/admin/AdminImages.jsx';
 import AdminCatalog from './pages/admin/AdminCatalog.jsx';
 import AdminAdmins from './pages/admin/AdminAdmins.jsx';
 import AdminSettings from './pages/admin/AdminSettings.jsx';
+import AdminContact from './pages/admin/AdminContact.jsx';
 import NotFound from './pages/NotFound.jsx';
 import './styles/admin.css';
 
@@ -40,6 +41,7 @@ export default function AdminApp() {
             <Route path="catalog" element={<AdminCatalog />} />
             <Route path="admins" element={<AdminAdmins />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="contact" element={<AdminContact />} />
             <Route path="*" element={<NotFound homeTo="/admin" homeLabel="Volver al panel" />} />
           </Route>
         </Route>

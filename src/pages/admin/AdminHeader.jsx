@@ -41,6 +41,12 @@ export default function AdminHeader() {
                 <Toggle label="Mostrar logo" checked={v.showLogo} onChange={(showLogo) => set({ showLogo })} hint="El logo se administra en Apariencia." />
                 <Toggle label="Mostrar nombre" checked={v.showBrand} onChange={(showBrand) => set({ showBrand })} />
                 <Toggle label="Header fijo al hacer scroll" checked={v.sticky} onChange={(sticky) => set({ sticky })} />
+                <Toggle
+                  label="Mostrar botón de candado (acceso al panel)"
+                  checked={v.showAdminLink}
+                  onChange={(showAdminLink) => set({ showAdminLink })}
+                  hint="Lleva al inicio de sesión. Sólo los administradores pueden entrar."
+                />
               </Panel>
 
               <Panel title="Colores">

@@ -9,6 +9,7 @@ const NAV = [
   { to: '/admin/content', label: 'Contenido', icon: '☰' },
   { to: '/admin/header', label: 'Header', icon: '▔' },
   { to: '/admin/footer', label: 'Footer', icon: '▁' },
+  { to: '/admin/contact', label: 'Página de contacto', icon: '✉' },
   { to: '/admin/appearance', label: 'Apariencia y logo', icon: '◐' },
   { to: '/admin/images', label: 'Imágenes', icon: '▣' },
   { group: 'Catálogo' },

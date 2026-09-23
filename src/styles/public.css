@@ -849,3 +849,179 @@
     grid-template-columns: 1.1fr 1fr;
   }
 }
+
+/* ─── Acceso al panel (candado) ─── */
+.site-header__admin {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--c-header-text) 14%, transparent);
+  color: inherit;
+  opacity: 0.75;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.site-header__admin:hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--c-primary) 35%, transparent);
+}
+
+@media (min-width: 900px) {
+  /* En escritorio va después del menú */
+  .site-header__admin {
+    order: 3;
+  }
+}
+
+/* ─── Contacto ─── */
+.contact-hero {
+  padding-block: clamp(44px, 7vw, 88px) clamp(32px, 5vw, 56px);
+  background:
+    radial-gradient(70% 90% at 100% 0%, color-mix(in srgb, var(--c-primary) 45%, transparent), transparent 70%),
+    radial-gradient(50% 60% at 0% 100%, var(--c-primary-soft), transparent 70%);
+}
+
+.contact-hero__inner {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+}
+
+.contact-hero__inner .eyebrow {
+  margin-bottom: 0;
+}
+
+.contact-hero__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.3rem, 1.5rem + 3.6vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.contact-hero__subtitle {
+  max-width: 56ch;
+  color: var(--c-muted);
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.contact__content {
+  padding-block: clamp(24px, 4vw, 40px) clamp(56px, 8vw, 104px);
+}
+
+.contact__grid {
+  display: grid;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .contact__grid {
+    grid-template-columns: 1fr 1.1fr;
+  }
+}
+
+.contact__info {
+  display: grid;
+  gap: 32px;
+}
+
+.contact__heading {
+  margin-bottom: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-secondary);
+}
+
+.contact-hours__text {
+  white-space: pre-line;
+  color: var(--c-text);
+}
+
+.socials--contact .socials__link {
+  border-color: var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-secondary);
+}
+
+.contact__cards {
+  display: grid;
+  gap: 14px;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  background: var(--c-surface);
+  color: inherit;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.contact-card--link {
+  transition:
+    transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease),
+    border-color 0.25s;
+}
+
+.contact-card--link:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: color-mix(in srgb, var(--c-primary) 70%, var(--c-border));
+}
+
+.contact-card__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--c-primary-soft);
+  color: var(--c-secondary);
+  font-size: 1.3rem;
+}
+
+.contact-card__text {
+  display: grid;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.contact-card__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.contact-card__value {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.contact-card__action {
+  flex: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--c-secondary);
+}
+
+@media (max-width: 480px) {
+  .contact-card__action {
+    display: none;
+  }
+}

@@ -7,6 +7,7 @@ import ErrorBoundary from './components/ui/ErrorBoundary.jsx';
 import { PageLoader } from './components/ui/Spinner.jsx';
 import Home from './pages/Home.jsx';
 import Catalog from './pages/Catalog.jsx';
+import Contact from './pages/Contact.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 // El panel se carga bajo demanda: los visitantes nunca descargan su código
@@ -19,6 +20,7 @@ function PublicSite() {
         <Route element={<PublicLayout />}>
           <Route index element={<Home />} />
           <Route path="catalogo" element={<Catalog />} />
+          <Route path="contacto" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
