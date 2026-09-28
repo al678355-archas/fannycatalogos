@@ -1,0 +1,297 @@
+/* ==========================================================================
+   LoadingNails — indicador de carga: una uña pintándose con esmalte.
+   Los colores salen del tema (--c-primary / --c-secondary), así que
+   acompañan los cambios de Apariencia del CMS.
+   ========================================================================== */
+.loading-nails {
+  --ln-size: 64px;
+  --ln-duration: 2.8s;
+  --ln-polish: color-mix(in srgb, var(--c-primary) 72%, var(--c-secondary));
+  --ln-line: color-mix(in srgb, var(--c-secondary) 50%, transparent);
+  --ln-skin: color-mix(in srgb, var(--c-primary) 16%, #fff8f4);
+  --ln-nail: #ffffff;
+  --ln-handle: var(--c-secondary);
+  --ln-ferrule: #c9a27e;
+  --ln-sparkle: color-mix(in srgb, var(--c-secondary) 55%, var(--c-primary));
+}
+
+.ln-svg {
+  display: block;
+  width: var(--ln-size);
+  height: var(--ln-size);
+  max-width: none;
+  overflow: visible;
+}
+
+/* ─── Variantes ─── */
+
+/* Pantalla completa: carga inicial y rutas */
+.loading-nails--page {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  --ln-size: clamp(76px, 18vw, 104px);
+}
+
+/* Dentro de una sección, el catálogo o el panel: sólo el espacio necesario */
+.loading-nails--section {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding-block: clamp(28px, 6vw, 64px);
+  --ln-size: clamp(56px, 12vw, 72px);
+}
+
+/* Del tamaño del texto (botones) */
+.loading-nails--inline {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  margin-block: -0.35em;
+  vertical-align: middle;
+  --ln-size: 1.55em;
+}
+
+/* En botones el dibujo se adapta al color del texto del botón */
+.btn .loading-nails--inline {
+  --ln-polish: currentColor;
+  --ln-line: color-mix(in srgb, currentColor 55%, transparent);
+  --ln-skin: transparent;
+  --ln-nail: transparent;
+  --ln-handle: currentColor;
+  --ln-ferrule: currentColor;
+  --ln-sparkle: currentColor;
+}
+
+/* ─── Dibujo ─── */
+.ln-finger {
+  fill: var(--ln-skin);
+  stroke: var(--ln-line);
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+}
+
+.ln-nail {
+  fill: var(--ln-nail);
+  stroke: var(--ln-line);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.ln-stroke {
+  fill: var(--ln-polish);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(0);
+  animation: var(--ln-duration) cubic-bezier(0.45, 0, 0.3, 1) infinite;
+}
+
+.ln-stroke--center {
+  animation-name: ln-paint-center;
+}
+
+.ln-stroke--left {
+  animation-name: ln-paint-left;
+}
+
+.ln-stroke--right {
+  animation-name: ln-paint-right;
+}
+
+.ln-shine {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  opacity: 0;
+  animation: ln-shine var(--ln-duration) ease-in-out infinite;
+}
+
+.ln-sparkle {
+  fill: var(--ln-sparkle);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ln-sparkle var(--ln-duration) ease-out infinite;
+}
+
+.ln-brush {
+  animation: ln-brush var(--ln-duration) cubic-bezier(0.45, 0, 0.3, 1) infinite;
+}
+
+.ln-brush__bristles {
+  fill: var(--ln-polish);
+}
+
+.ln-brush__ferrule {
+  fill: var(--ln-ferrule);
+}
+
+.ln-brush__handle {
+  fill: var(--ln-handle);
+}
+
+/* ─── Animaciones (una vuelta = 3 pinceladas + brillo) ─── */
+
+/* El pincel recorre cada franja desde la cutícula hasta la punta */
+@keyframes ln-brush {
+  0% {
+    transform: translate(32px, 34px) rotate(-8deg);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(32px, 17px) rotate(-8deg);
+  }
+  26% {
+    transform: translate(26.3px, 33px) rotate(-12deg);
+  }
+  44% {
+    transform: translate(26.3px, 19px) rotate(-12deg);
+  }
+  50% {
+    transform: translate(37.7px, 33px) rotate(-4deg);
+  }
+  68% {
+    transform: translate(37.7px, 19px) rotate(-4deg);
+  }
+  78% {
+    transform: translate(52px, 6px) rotate(10deg);
+    opacity: 1;
+  }
+  84% {
+    transform: translate(54px, 4px) rotate(10deg);
+    opacity: 0;
+  }
+  96% {
+    transform: translate(32px, 34px) rotate(-8deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(32px, 34px) rotate(-8deg);
+    opacity: 1;
+  }
+}
+
+@keyframes ln-paint-center {
+  0% {
+    transform: scaleY(0);
+    opacity: 1;
+  }
+  20%,
+  88% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  98% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes ln-paint-left {
+  0%,
+  26% {
+    transform: scaleY(0);
+    opacity: 1;
+  }
+  44%,
+  88% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  98% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes ln-paint-right {
+  0%,
+  50% {
+    transform: scaleY(0);
+    opacity: 1;
+  }
+  68%,
+  88% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  98% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes ln-shine {
+  0%,
+  70% {
+    opacity: 0;
+  }
+  76%,
+  88% {
+    opacity: 0.9;
+  }
+  96%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ln-sparkle {
+  0%,
+  72% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1.15) rotate(45deg);
+  }
+  86%,
+  92% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+  98%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6) rotate(45deg);
+  }
+}
+
+/* Sin animaciones: uña ya pintada y con brillo, sin movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .ln-stroke,
+  .ln-shine,
+  .ln-sparkle,
+  .ln-brush {
+    animation: none;
+  }
+
+  .ln-stroke {
+    transform: none;
+  }
+
+  .ln-shine,
+  .ln-sparkle {
+    opacity: 0.9;
+  }
+
+  .ln-brush {
+    opacity: 0;
+  }
+}

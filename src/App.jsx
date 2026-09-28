@@ -4,13 +4,13 @@ import { SiteProvider } from './context/SiteContext.jsx';
 import PublicLayout from './components/layout/PublicLayout.jsx';
 import ScrollToTop from './components/layout/ScrollToTop.jsx';
 import ErrorBoundary from './components/ui/ErrorBoundary.jsx';
-import { PageLoader } from './components/ui/Spinner.jsx';
+import LoadingNails from './components/ui/LoadingNails.jsx';
+import { useKeepAlive } from './hooks/useKeepAlive.js';
 import Home from './pages/Home.jsx';
 import Catalog from './pages/Catalog.jsx';
 import Contact from './pages/Contact.jsx';
 import NotFound from './pages/NotFound.jsx';
 
-// El panel se carga bajo demanda: los visitantes nunca descargan su código
 const AdminApp = lazy(() => import('./AdminApp.jsx'));
 
 function PublicSite() {
@@ -29,6 +29,9 @@ function PublicSite() {
 }
 
 export default function App() {
+  // Ping silencioso al backend cada 15 minutos (sitio público y panel)
+  useKeepAlive();
+
   return (
     <ErrorBoundary>
       <ScrollToTop />
@@ -36,7 +39,7 @@ export default function App() {
         <Route
           path="/admin/*"
           element={
-            <Suspense fallback={<PageLoader />}>
+            <Suspense fallback={<LoadingNails variant="page" />}>
               <AdminApp />
             </Suspense>
           }

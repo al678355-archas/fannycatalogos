@@ -729,11 +729,6 @@
   min-height: auto;
 }
 
-.preview__loading {
-  padding: 24px;
-  color: var(--a-muted);
-  text-align: center;
-}
 
 .preview .site-footer {
   padding-top: 32px;

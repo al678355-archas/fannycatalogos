@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Spinner from './Spinner.jsx';
+import LoadingNails from './LoadingNails.jsx';
 
 /**
  * Botón reutilizable. Con `to` renderiza un <Link>, con `href` un <a>.
@@ -23,7 +23,7 @@ export default function Button({
     .join(' ');
   const content = (
     <>
-      {loading && <Spinner size="sm" />}
+      {loading && <LoadingNails variant="inline" label="Procesando" />}
       <span>{children}</span>
     </>
   );

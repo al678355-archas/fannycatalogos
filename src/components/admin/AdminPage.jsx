@@ -1,4 +1,4 @@
-import { PageLoader } from '../ui/Spinner.jsx';
+import LoadingNails from '../ui/LoadingNails.jsx';
 import { ErrorState } from '../ui/StateMessage.jsx';
 import Button from '../ui/Button.jsx';
 
@@ -35,7 +35,7 @@ export function Panel({ title, description, children, actions, className = '' })
 
 /** Maneja estados loading / error de una página del panel */
 export function AdminAsync({ loading, error, onRetry, children }) {
-  if (loading) return <PageLoader />;
+  if (loading) return <LoadingNails variant="section" />;
   if (error) return <ErrorState error={error} onRetry={onRetry} />;
   return children();
 }

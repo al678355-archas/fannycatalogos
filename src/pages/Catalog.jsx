@@ -3,7 +3,8 @@ import { useSite } from '../context/SiteContext.jsx';
 import { useAsync } from '../hooks/useAsync.js';
 import { useDocumentMeta } from '../hooks/useDocumentMeta.js';
 import { productsService } from '../services/products.js';
-import ProductGrid, { ProductGridSkeleton } from '../components/catalog/ProductGrid.jsx';
+import ProductGrid from '../components/catalog/ProductGrid.jsx';
+import LoadingNails from '../components/ui/LoadingNails.jsx';
 import ProductModal from '../components/catalog/ProductModal.jsx';
 import ShareBar from '../components/catalog/ShareBar.jsx';
 import { EmptyState, ErrorState } from '../components/ui/StateMessage.jsx';
@@ -37,7 +38,7 @@ export default function Catalog() {
 
       <section className="container catalog__content" aria-live="polite">
         {loading && !data ? (
-          <ProductGridSkeleton />
+          <LoadingNails variant="section" label="Cargando productos" />
         ) : error ? (
           <ErrorState title="No pudimos cargar los productos" error={error} onRetry={reload} />
         ) : products.length === 0 ? (

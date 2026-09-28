@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import { useSite } from '../../context/SiteContext.jsx';
-import { PageLoader } from '../ui/Spinner.jsx';
+import LoadingNails from '../ui/LoadingNails.jsx';
 import { ErrorState } from '../ui/StateMessage.jsx';
 import { useFavicon } from '../../hooks/useDocumentMeta.js';
 
@@ -12,7 +12,7 @@ export default function PublicLayout() {
 
   useFavicon(site?.favicon?.url || site?.logo?.url);
 
-  if (loading && !data) return <PageLoader />;
+  if (loading && !data) return <LoadingNails variant="page" />;
   if (error && !data) {
     return (
       <div className="site site--center">

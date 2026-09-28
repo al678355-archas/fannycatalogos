@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import Button from './Button.jsx';
 import ConfirmDialog from './ConfirmDialog.jsx';
+import LoadingNails from './LoadingNails.jsx';
 import { imagesService } from '../../services/images.js';
 import { useToast } from '../../context/ToastContext.jsx';
 import { validateImageFile, ALLOWED_IMAGE_TYPES, MAX_IMAGE_MB } from '../../utils/validators.js';
@@ -71,8 +72,7 @@ export default function ImageUploader({
         )}
         {uploading && (
           <div className="uploader__overlay">
-            <span className="spinner spinner--md" />
-            Subiendo…
+            <LoadingNails variant="section" label="Subiendo imagen" />
           </div>
         )}
       </div>

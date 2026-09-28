@@ -3,7 +3,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { TextInput } from '../../components/ui/Field.jsx';
 import Button from '../../components/ui/Button.jsx';
-import { PageLoader } from '../../components/ui/Spinner.jsx';
+import LoadingNails from '../../components/ui/LoadingNails.jsx';
 
 export default function AdminLogin() {
   const { status, login } = useAuth();
@@ -18,7 +18,7 @@ export default function AdminLogin() {
     document.title = 'Iniciar sesión · Panel';
   }, []);
 
-  if (status === 'loading') return <PageLoader />;
+  if (status === 'loading') return <LoadingNails variant="page" label="Verificando sesión" />;
   if (status === 'authenticated') return <Navigate to={from} replace />;
 
   const handleSubmit = async (e) => {
