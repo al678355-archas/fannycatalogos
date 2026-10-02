@@ -15,6 +15,7 @@ export default function ProductModal({ product, currency, locale, onClose }) {
             )}
           </div>
           <div className="product-detail__info">
+            {product.category && <p className="eyebrow">{product.category}</p>}
             <h2 className="product-detail__name">{product.name}</h2>
             <p className="product-detail__price">{formatPrice(product.price, currency, locale)}</p>
             <div className="product-detail__desc">

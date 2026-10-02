@@ -24,8 +24,14 @@ export default function AdminProducts() {
   const products = useMemo(() => data?.products ?? [], [data]);
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return q ? products.filter((p) => p.name.toLowerCase().includes(q)) : products;
+    return q
+      ? products.filter((p) => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))
+      : products;
   }, [products, query]);
+  const categories = useMemo(
+    () => [...new Set(products.map((p) => p.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'es')),
+    [products],
+  );
 
   const closeForm = () => {
     setEditing(null);
@@ -111,7 +117,7 @@ export default function AdminProducts() {
                 <input
                   className="input toolbar__search"
                   type="search"
-                  placeholder="Buscar por nombre…"
+                  placeholder="Buscar por nombre o categoría…"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   aria-label="Buscar productos"
@@ -132,7 +138,7 @@ export default function AdminProducts() {
                       <div className="item-row__info">
                         <p className="item-row__title">{p.name}</p>
                         <p className="item-row__meta">
-                          <strong>{formatPrice(p.price)}</strong> · Orden {p.sortOrder} · Actualizado {formatDate(p.updatedAt)}
+                          <strong>{formatPrice(p.price)}</strong> · {p.category || 'Sin categoría'} · Orden {p.sortOrder} · Actualizado {formatDate(p.updatedAt)}
                         </p>
                       </div>
                       <span className={`badge ${p.isActive ? 'badge--success' : 'badge--muted'}`}>
@@ -178,6 +184,7 @@ export default function AdminProducts() {
         <ProductForm
           key={editing === 'new' ? 'new' : editing.id}
           product={editing === 'new' ? null : editing}
+          categories={categories}
           onSubmit={handleSubmit}
           onClose={closeForm}
         />

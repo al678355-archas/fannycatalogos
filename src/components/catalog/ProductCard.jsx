@@ -21,6 +21,7 @@ export default function ProductCard({ product, currency, locale, onSelect }) {
           )}
         </div>
         <div className="product-card__body">
+          {product.category && <p className="product-card__category">{product.category}</p>}
           <h3 className="product-card__name">{product.name}</h3>
           {product.description && <p className="product-card__desc">{product.description}</p>}
           <p className="product-card__price">{formatPrice(product.price, currency, locale)}</p>

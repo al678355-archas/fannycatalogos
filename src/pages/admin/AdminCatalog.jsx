@@ -3,19 +3,60 @@ import { useAsync } from '../../hooks/useAsync.js';
 import { useCopy } from '../../hooks/useCopy.js';
 import { catalogService } from '../../services/catalog.js';
 import { productsService } from '../../services/products.js';
+import { siteService } from '../../services/site.js';
 import { PageHeader, Panel, AdminAsync } from '../../components/admin/AdminPage.jsx';
 import Button from '../../components/ui/Button.jsx';
 
 const loadShare = async () => {
-  const [share, stats] = await Promise.all([catalogService.share(), productsService.stats()]);
-  return { url: share.url, stats: stats.stats };
+  const [share, stats, site] = await Promise.all([
+    catalogService.share(),
+    productsService.stats(),
+    siteService.getPublic(),
+  ]);
+  return { url: share.url, stats: stats.stats, theme: site.site.theme };
 };
+
+const PDF_STYLES = [
+  { id: 'color', title: 'Con estilo', text: 'Usa los colores de tu página pública.' },
+  { id: 'plain', title: 'Sin estilo', text: 'Blanco y negro, sin fondos. Ahorra tinta al imprimir.' },
+];
+
+/** Selector "con estilo / sin estilo" con una mini vista de los colores */
+function PdfStylePicker({ value, onChange, theme }) {
+  const swatches = {
+    color: [theme.primary, theme.secondary, theme.background, theme.price],
+    plain: ['#111111', '#555555', '#BDBDBD', '#FFFFFF'],
+  };
+  return (
+    <div className="pdf-style" role="radiogroup" aria-label="Estilo del PDF">
+      {PDF_STYLES.map((option) => (
+        <button
+          key={option.id}
+          type="button"
+          role="radio"
+          aria-checked={value === option.id}
+          className={`pdf-style__option ${value === option.id ? 'is-active' : ''}`}
+          onClick={() => onChange(option.id)}
+        >
+          <span className="pdf-style__swatches" aria-hidden="true">
+            {swatches[option.id].map((color, i) => (
+              <span key={i} style={{ background: color }} />
+            ))}
+          </span>
+          <span className="pdf-style__title">{option.title}</span>
+          <span className="pdf-style__text">{option.text}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export default function AdminCatalog() {
   const { data, loading, error, reload } = useAsync(loadShare);
   const { copied, copy } = useCopy();
   // Cambia al regenerar para evitar caché del navegador en el QR
   const [version, setVersion] = useState(() => Date.now());
+  const [pdfStyle, setPdfStyle] = useState('color');
 
   return (
     <>
@@ -62,18 +103,19 @@ export default function AdminCatalog() {
 
             <Panel
               title="Catálogo PDF"
-              description="Formato carta (8.5 × 11 in) listo para imprimir. Se genera al momento con los productos activos."
+              description="Carta vertical (8.5 × 11 in) con márgenes de 2 cm, listo para imprimir: portada, índice y productos por categoría (4 por página)."
               className="panel--wide"
             >
               <p className="pdf-summary">
                 <strong>{data.stats.active}</strong> {data.stats.active === 1 ? 'producto activo' : 'productos activos'} se
                 incluirán en el PDF.
               </p>
+              <PdfStylePicker value={pdfStyle} onChange={setPdfStyle} theme={data.theme} />
               <div className="quick-actions">
-                <Button href={catalogService.pdfUrl()} download>
+                <Button href={catalogService.pdfUrl({ style: pdfStyle })} download>
                   Descargar catálogo PDF
                 </Button>
-                <Button variant="outline" href={`${catalogService.pdfUrl()}?inline=1`} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" href={catalogService.pdfUrl({ style: pdfStyle, inline: true })} target="_blank" rel="noopener noreferrer">
                   Vista previa ↗
                 </Button>
               </div>

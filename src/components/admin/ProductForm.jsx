@@ -5,7 +5,7 @@ import ImageUploader from '../ui/ImageUploader.jsx';
 import { TextInput, TextArea, Toggle } from '../ui/Field.jsx';
 import { formatPrice, parsePriceInput } from '../../utils/format.js';
 
-const EMPTY = { name: '', description: '', price: '', isActive: true, sortOrder: '', image: null };
+const EMPTY = { name: '', description: '', category: '', price: '', isActive: true, sortOrder: '', image: null };
 
 function validate(values) {
   const errors = {};
@@ -21,7 +21,7 @@ function validate(values) {
 }
 
 /** Crear / editar producto. Montar con key distinta por producto para reiniciar el estado. */
-export default function ProductForm({ product, onSubmit, onClose }) {
+export default function ProductForm({ product, categories = [], onSubmit, onClose }) {
   const [values, setValues] = useState(() =>
     product ? { ...product, sortOrder: String(product.sortOrder) } : EMPTY,
   );
@@ -41,6 +41,7 @@ export default function ProductForm({ product, onSubmit, onClose }) {
     const payload = {
       name: values.name.trim(),
       description: values.description.trim(),
+      category: values.category.trim(),
       price: normalizedPrice,
       isActive: values.isActive,
       imageId: values.image?.id ?? null,
@@ -85,6 +86,21 @@ export default function ProductForm({ product, onSubmit, onClose }) {
             onChange={(e) => set({ description: e.target.value })}
             error={errors.description}
           />
+          <TextInput
+            label="Categoría"
+            value={values.category}
+            maxLength={80}
+            list="product-categories"
+            placeholder="Ej: Labios, Ojos, Rostro…"
+            onChange={(e) => set({ category: e.target.value })}
+            error={errors.category}
+            hint="Agrupa los productos en el catálogo y en el PDF. Escribe una nueva o elige una existente."
+          />
+          <datalist id="product-categories">
+            {categories.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
           <div className="form-row">
             <TextInput
               label="Precio *"

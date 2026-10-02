@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSite } from '../context/SiteContext.jsx';
 import { useAsync } from '../hooks/useAsync.js';
 import { useDocumentMeta } from '../hooks/useDocumentMeta.js';
@@ -14,7 +14,11 @@ export default function Catalog() {
   const site = siteData.site;
   const { data, loading, error, reload } = useAsync(productsService.listPublic);
   const [selected, setSelected] = useState(null);
-  const products = data?.products || [];
+  const [category, setCategory] = useState('');
+  const products = useMemo(() => data?.products || [], [data]);
+  // Categorías en el orden en que aparecen los productos
+  const categories = useMemo(() => [...new Set(products.map((p) => p.category).filter(Boolean))], [products]);
+  const visible = category ? products.filter((p) => p.category === category) : products;
 
   useDocumentMeta({
     title: `${site.catalogTitle} · ${site.siteName}`,
@@ -45,10 +49,26 @@ export default function Catalog() {
           <EmptyState title="Aún no hay productos" message="Vuelve pronto: estamos preparando nuestro catálogo." />
         ) : (
           <>
+            {categories.length > 1 && (
+              <div className="catalog-filters" role="group" aria-label="Filtrar por categoría">
+                {['', ...categories].map((c) => (
+                  <button
+                    key={c || 'all'}
+                    type="button"
+                    className={`catalog-filters__chip ${category === c ? 'is-active' : ''}`}
+                    aria-pressed={category === c}
+                    onClick={() => setCategory(c)}
+                  >
+                    {c || 'Todos'}
+                  </button>
+                ))}
+              </div>
+            )}
             <p className="catalog__count">
-              {products.length} {products.length === 1 ? 'producto' : 'productos'}
+              {visible.length} {visible.length === 1 ? 'producto' : 'productos'}
+              {category && ` en ${category}`}
             </p>
-            <ProductGrid products={products} currency={site.currency} locale={site.locale} onSelect={setSelected} />
+            <ProductGrid products={visible} currency={site.currency} locale={site.locale} onSelect={setSelected} />
           </>
         )}
       </section>

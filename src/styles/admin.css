@@ -662,6 +662,59 @@
   font-size: 0.95rem;
 }
 
+.pdf-style {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-block: 14px;
+}
+
+.pdf-style__option {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--a-border);
+  border-radius: 12px;
+  background: var(--a-surface);
+  color: var(--a-text);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.pdf-style__option:hover {
+  border-color: color-mix(in srgb, var(--a-accent) 45%, var(--a-border));
+}
+
+.pdf-style__option.is-active {
+  border-color: var(--a-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--a-accent) 16%, transparent);
+}
+
+.pdf-style__swatches {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.pdf-style__swatches span {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgb(0 0 0 / 0.12);
+}
+
+.pdf-style__title {
+  font-weight: 700;
+}
+
+.pdf-style__text {
+  font-size: 0.85rem;
+  color: var(--a-muted);
+}
+
 /* ─── SEO preview ─── */
 .serp {
   padding: 14px 16px;
